@@ -57,7 +57,12 @@ class Worker<T> {
     private save() {
         if (this.entities.length > 0) {
             const copy = this.clearEntities();
-            this.repository.insert(copy).then(() => this.onGoingInserts--);
+            this.repository.insert(copy)
+                .then(() => this.onGoingInserts--)
+                .catch((reason) => {
+                    console.log(`Failed to import Persons:\n${reason}`);
+                    this.onGoingInserts--;
+                });
             this.onGoingInserts++;
         }
     }
