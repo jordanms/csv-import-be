@@ -1,0 +1,15 @@
+version: '3.1'
+services:
+  db:
+    image: mysql
+    container_name: csv-import-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: verySecure123
+    ports:
+      - 3307:3306
+    entrypoint:
+          sh -c "
+          echo 'CREATE DATABASE IF NOT EXISTS csv_import; CREATE DATABASE IF NOT EXISTS csv_import_test;' > /docker-entrypoint-initdb.d/init.sql;
+          /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+          "
